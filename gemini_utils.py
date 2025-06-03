@@ -13,10 +13,13 @@ model = genai.GenerativeModel("gemini-1.5-flash")
 # print(response.text)
 
 
-def generate_sql_query(natural_language):
+def generate_sql_query(natural_language, tbl_name):
     prompt = f"""
         You are a helpful assistant that translates natural language into SQL queries.
-        The target database is a SQL Server table named 'Test_TSSR'.
+        The target database is a SQL Server table named {tbl_name}.
+        These are the column names: ['site_id', 'latitude', 'longitude', 'site_name', 'site_location', 'site_type', 'tower_height']
+        Don't return "SELECT * FROM {tbl_name}", unless you know what you're doing.
+        If you use COUNT(*) then give alias also like: COUNT(*) as Number of.
         Only return the SQL query without any extra text.
         
         Natural Language Query:
@@ -33,7 +36,8 @@ def generate_sql_query(natural_language):
         return None
 
 # qry = 'show all sites of Residential Area'
-# rs_sql = generate_sql_query(qry)
+# tbl = 'Test_TSSR'
+# rs_sql = generate_sql_query(qry, tbl)
 # print(rs_sql)
 
 def explain_results(results_df):
@@ -53,7 +57,7 @@ def explain_results(results_df):
     except Exception as e:
         return f"Could not generate explanation due to error: {e}"
 
-#
+
 # data = {
 #     'site_id': [1234, 1235, 1236, 1237, 1238],
 #     'latitude': [32.2446, 32.251, 32.239, 32.247, 32.255],
@@ -66,6 +70,6 @@ def explain_results(results_df):
 #
 # test_df = pd.DataFrame(data)
 # # print(test_df)
-# 
+#
 # explain = explain_results(test_df)
 # print(explain)
