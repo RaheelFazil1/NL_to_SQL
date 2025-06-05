@@ -11,10 +11,23 @@ def connect_to_db():
     #     f"UID={DB_CONFIG['user']};"
     #     f"PWD={DB_CONFIG['password']}"
     # )
-    connection_string = (
-        f"mssql+pyodbc://@localhost/{DB_CONFIG['database']}?"
-        f"driver=ODBC+Driver+17+for+SQL+Server&trusted_connection=yes"
-    )
+    # connection_string = (
+    #     f"mssql+pyodbc://@localhost/{DB_CONFIG['database']}?"
+    #     f"driver=ODBC+Driver+17+for+SQL+Server&trusted_connection=yes"
+    # )
+
+    # connection_string = (
+    #     f"mssql+pyodbc://{DB_CONFIG['user']}:{DB_CONFIG['password']}@{DB_CONFIG['server']}/{DB_CONFIG['database']}?"
+    #     f"driver=ODBC+Driver+17+for+SQL+Server&trusted_connection=yes"
+    # )
+
+    username = DB_CONFIG['user']
+    password = DB_CONFIG['password']
+    server = DB_CONFIG['server']
+    database = DB_CONFIG['database']
+    driver = 'ODBC Driver 17 for SQL Server'
+
+    connection_string = f'mssql+pyodbc://{username}:{password}@{server}/{database}?driver={driver}'
     try:
         # conn = pyodbc.connect(connection_string)
         engine = create_engine(connection_string)
@@ -38,4 +51,5 @@ def execute_sql_query(query, conn, params=None):
 # result_df = execute_sql_query(my_query, db_connection)
 #
 # print(result_df)
+
 
